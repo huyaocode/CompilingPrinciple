@@ -2,7 +2,7 @@
  * 语法分析
  */
 const isTerminator = require('./endSymbol');
-const jumpState = require('./transformTabel');
+const jumpState = require('./jumpState')
 //符号栈
 const stack = [];
 //剩余符号
@@ -64,7 +64,6 @@ function handleList() {
         continue;
       } else {
         error(state, word);
-        continue;
         break;
       }
     } else if (state === '#') {
