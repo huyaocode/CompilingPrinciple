@@ -1,21 +1,25 @@
 {
-    /*This a test program.*/
-    int abc;
-    int 1203;
-    int A$@;
-    int i;
-    int n;
-    int b,c;
-    int 2a;
-    int a2;
-    read n;
-    n = 012345;
-    for (i=1;i<=n; i= i+1)
-    {
-    abc=abc+i;
-    }
-    if(i!=n) n = n+i;
-    if (!n) b = b+c;
-    /*The loop ended
-    write abc;
+int a;
+int i;
+int b2;
+int c;
+for (i=1; i <= 10; i=i+1)
+{
+
+a=a+i;
+b=b*i;
+{c=a+b;
+}
+while(x<=10)
+{
+C=a+b+(x*y);
+if (a>b)
+{
+read a;
+}
+else
+{
+write b+5;
+}
+write c;
 }

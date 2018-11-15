@@ -1,4 +1,4 @@
-const endSymble = [`{`,`int`,`;`,`(`,`)`,`=`,`>`,`<=`,`write`,'read',`for`,`+`,`-`,`if`,`while`,`}`,`ID`,`NUM`,`*`,`/`];
+const endSymble = [`{`,`int`,`;`,`(`,`)`,`=`,`>`,`<=`,`write`,'read',`for`,`+`,`-`,`if`,'else',`while`,`}`,`ID`,`NUM`,`*`,`/`];
 /**
  * 判断是否为终结符
  */

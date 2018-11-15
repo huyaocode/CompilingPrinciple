@@ -2,7 +2,7 @@
  * 语法分析
  */
 const isTerminator = require('./endSymbol');
-const jumpState = require('./jumpState')
+const jumpState = require('./jumpState');
 //符号栈
 const stack = [];
 //剩余符号
@@ -29,7 +29,6 @@ module.exports = function(res) {
   stack.push('#');
   stack.push('<program>');
   print('符号栈', '', '读入符号', '剩余符号', '使用产生式');
-
   handleList();
 
   return returnStr;
@@ -49,9 +48,10 @@ function getsym() {
 function handleList() {
   //当剩余字符串长度大于0
   let word = getsym(); //取出剩余字串的第一个
+  let state;
   while (remainWords.length > 0) {
     let list = [];
-    const state = stack.pop(); //栈顶弹出一个元素（最后一个）
+    state = stack.pop(); //栈顶弹出一个元素（最后一个）
     //如果是终结符
     if (isTerminator(state)) {
       if (word.type == state) {
@@ -68,10 +68,19 @@ function handleList() {
       }
     } else if (state === '#') {
       console.log('解析完成');
-      returnStr += '\n解析完成'
+      returnStr += '\n解析完成';
     }
     // 是非终结符， 那么查表。进行压栈操作
     else if ((list = jumpState(state, word.type))) {
+      if (list == '特殊处理') {
+        if (remainWords[0] == '}') {
+          console.log('使用空');
+          continue;
+        } else {
+          list = 'else|<statement_list*>';
+        }
+      }
+
       //打印输出
       const trans = state + '->' + list.split('|').join('');
       print(stack, state, word.type, remainWords, trans);
@@ -87,17 +96,33 @@ function handleList() {
       break;
     }
   }
+  if (stack.length > 1 && remainWords.length == 0) {
+    for (let i in stack) {
+      if (isTerminator(stack[i])) {
+        returnStr += '\nError 还差:  ' + stack[i] + ' 没有匹配';
+      }
+    }
+  }
 }
 
 function error(state, word) {
-  const errStr =
+  let errStr = '\n';
+  if (state == '<term*>') {
+    state = '一个分号';
+  } else if (state == '<statement_list>') {
+    state = '一个终结符或运算符';
+  } else if(state == '<arithmetic_expression>') {
+    state = '一个表达式';
+  }
+
+  errStr +=
     'Error 无法接收这个符号,应该为：' +
     state +
     ' 但实际上是' +
     word.type +
     '  ' +
-    word.value +
-    '\n';
+    word.value;
+
   returnStr += errStr;
 }
 
@@ -107,11 +132,11 @@ function error(state, word) {
 function print(stack, state, word, remainWords, useProduce) {
   let s;
   if (stack instanceof Array) {
-    s = stack.join(' ') + ' ' + state;
+    s = stack.join(' ');
   } else {
     s = stack;
   }
-  s += printSpace(s, 80);
+  s += printSpace(s, 160);
   let w = word;
   w += printSpace(w, 20);
   let r;
@@ -122,8 +147,8 @@ function print(stack, state, word, remainWords, useProduce) {
   }
   r += printSpace(r, 230);
   let u = useProduce;
-  u += printSpace(u, 100);
-  const str = s + w + r + u + '\n';
+  u += printSpace(u, 150);
+  const str = s + u + w + r + '\n';
   returnStr += str;
 }
 
@@ -146,7 +171,7 @@ function getWords() {
 function printSpace(word, len) {
   let wordLen;
   if (word == null) {
-    wordLen = len;
+    wordLen = 4;
   } else {
     wordLen = word.length;
     if (len - word.length < 0) {
