@@ -1,0 +1,19 @@
+{
+	int a;
+	int b;
+	int c;
+	int i;
+	a = 0;
+	b = 1;
+	c = 0;
+	for(i = 1; i <= 10; i = i + 1)
+	{
+		
+		read a;
+		c = c + a;
+		b = b * a; 
+		
+	}
+	write c;
+	write b;
+}
